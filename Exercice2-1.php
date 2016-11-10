@@ -4,7 +4,6 @@
   </head>
 
   <body>
-  coucou
   <?php
 
     try{
@@ -14,11 +13,37 @@
     catch(PDOException  $e){
       $msg = 'Erreur PDO dans ' . $e->getMessage();
       echo $msg;
-  }
-  $insert = "INSERT INTO users (nom,sexe) VALUES ('$_POST[firstname]','$_POST[gender]', '$_POST[comments]')";
-  $pdo->exec($insert);
+    }
 
-  $Data= $pdo -> query('SELECT * FROM `users`') -> fetchAll();
+
+    if (!isset($_POST["firstname"]))
+    {
+        echo '<h1> Pas de nouvelles données!</h1>';
+    }
+    else
+    {
+        #Séries de conditions pour éviter les erreurs au cas ou un champ non requis n'a pas été remplis
+        if (!empty($_POST["gender"])){
+            $gender = $_POST["gender"];
+        }
+        else{
+            $gender = 'N/A';
+        }
+
+        if (!empty($_POST["comments"])){
+            $comments = $_POST["comments"];
+        }
+        else {
+            $comments = 'N/A';
+        }
+
+        #Requête d'insertion SQL
+        $insert = "INSERT INTO users (nom,sexe,comments)
+        VALUES ('$_POST[firstname]','$gender', '$comments')";
+        $pdo->exec($insert);
+    }
+
+      $Data= $pdo -> query('SELECT * FROM `users`') -> fetchAll();
 
   ?>
 
