@@ -15,9 +15,9 @@
       $msg = 'Erreur PDO dans ' . $e->getMessage();
       echo $msg;
   }
-  $insert = "INSERT INTO users (nom,sexe) VALUES ('$_POST[firstname]','$_POST[gender]')";
+  $insert = "INSERT INTO users (nom,sexe) VALUES ('$_POST[firstname]','$_POST[gender]', '$_POST[comments]')";
   $pdo->exec($insert);
-  
+
   $Data= $pdo -> query('SELECT * FROM `users`') -> fetchAll();
 
   ?>
@@ -27,12 +27,14 @@
         <th>ID </th>
         <th>Nom</th>
         <th>Sexe</th>
+        <th>Commentaires</th>
       </tr>
     <?php foreach ($Data as $value):?>
       <tr>
         <td><?php echo $value['id'];?></td>
         <td><?php echo $value['nom'];?></td>
         <td><?php echo $value['sexe'];?></td>
+        <td><?php echo $value['comments'];?></td>
         <br>
       </tr>
     <?php endforeach; ?>
