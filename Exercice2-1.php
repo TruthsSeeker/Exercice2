@@ -5,24 +5,39 @@
 
   <body>
   coucou
+  <?php
 
-  <?php if (!isset($_POST["firstname"])):?>
-    Pas set!
-  <?php  else:?>
+    try{
+      $strConnection = 'mysql:host=localhost;dbname=foo';
+      $pdo = new PDO($strConnection, 'root', '');
+    }
+    catch(PDOException  $e){
+      $msg = 'Erreur PDO dans ' . $e->getMessage();
+      echo $msg;
+  }
+  $insert = "INSERT INTO users (nom,sexe) VALUES ('$_POST[firstname]','$_POST[gender]')";
+  $pdo->exec($insert);
+  
+  $Data= $pdo -> query('SELECT * FROM `users`') -> fetchAll();
+
+  ?>
+
     <table style="">
       <tr>
-        <th>Type </th>
-        <th>Value</th>
+        <th>ID </th>
+        <th>Nom</th>
+        <th>Sexe</th>
       </tr>
-    <?php foreach ($_POST as $key => $value):?>
+    <?php foreach ($Data as $value):?>
       <tr>
-        <td><?php echo $key;?></td>
-        <td><?php echo $value;?></td>
+        <td><?php echo $value['id'];?></td>
+        <td><?php echo $value['nom'];?></td>
+        <td><?php echo $value['sexe'];?></td>
         <br>
       </tr>
     <?php endforeach; ?>
     </table>
-  <?php var_dump($_POST); endif; ?> <br><br><br><br>
+  <?php var_dump($_POST); ?> <br><br><br><br>
 
   </body>
 </html>
