@@ -5,7 +5,7 @@
 
   <body>
   <?php
-
+header('Access-Control-Allow-Origin: *');
     try{
       $strConnection = 'mysql:host=localhost;dbname=foo';
       $pdo = new PDO($strConnection, 'root', '');
@@ -22,24 +22,14 @@
     }
     else
     {
-        #Séries de conditions pour éviter les erreurs au cas ou un champ non requis n'a pas été remplis
-        if (!empty($_POST["gender"])){
-            $gender = $_POST["gender"];
-        }
-        else{
-            $gender = 'N/A';
-        }
-
-        if (!empty($_POST["comments"])){
-            $comments = $_POST["comments"];
-        }
-        else {
-            $comments = 'N/A';
-        }
+        #Séries de conditions pour éviter les erreurs au cas ou un champ non requis n'a pas été remplis, a refactorer (foreach?)
+        $gender = !empty($_POST["gender"]) ? $_POST["gender"] : null;
+        $comments = !empty($_POST["comments"]) ? $_POST["comments"] : null;
 
         #Requête d'insertion SQL
-        $insert = "INSERT INTO users (nom,sexe,comments)
-        VALUES ('$_POST[firstname]','$gender', '$comments')";
+        $date =  date('Y-m-d H:i:s');
+        $insert = "INSERT INTO users (nom,sexe,comments,Date)
+        VALUES ('$_POST[firstname]','$gender', '$comments', '$date')";
         $pdo->exec($insert);
     }
 
